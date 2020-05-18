@@ -10,8 +10,8 @@ public class TemperatureConversion {
       System.out.println("Fahrenheit " + tempFahrenheit + " = " + convertF2C(tempFahrenheit) + " Celsius");
     } else {
 
-      for (String arg : args) {
-        double tempCelsius = Double.parseDouble(arg);
+      for (int i = 0; i < args.length; i++) {
+        double tempCelsius = Double.parseDouble(args[i]);
         System.out.println("Celsius " + tempCelsius + " = " + convertC2F(tempCelsius) + " Fahrenheit");
       }
     }
