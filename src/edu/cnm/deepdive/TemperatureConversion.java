@@ -2,6 +2,8 @@ package edu.cnm.deepdive;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class TemperatureConversion {
@@ -10,20 +12,9 @@ public class TemperatureConversion {
   private static final double CELSIUS_TO_FAHRENHEIT_SCALE = 9.0 / 5.0;
   private static final double SCALE_OFFSET = 32;
 
-  public static void main(String[] args) {
-    if (args.length == 0) {
-      double tempCelsius = 100;
-      double tempFahrenheit = 32;
-      System.out.println("Celsius " + tempCelsius + " = " + convertC2F(tempCelsius) + " Fahrenheit");
-      System.out.println("Fahrenheit " + tempFahrenheit + " = " + convertF2C(tempFahrenheit) + " Celsius");
-    } else {
-
-      for (int i = 0; i < args.length; i++) {
-        double tempCelsius = Double.parseDouble(args[i]);
-        System.out.println("Celsius " + tempCelsius + " = " + convertC2F(tempCelsius) + " Fahrenheit");
-      }
-    }
-  }
+  public static void main(String[] args) {  //invokes whatever main method says to do
+    convertInputToFahrenheit(System.in, System.out); //references to an operating system service on every console
+ }
 
   public static double convertC2F(double celsius) {
     return celsius * CELSIUS_TO_FAHRENHEIT_SCALE + SCALE_OFFSET;
@@ -57,10 +48,15 @@ public class TemperatureConversion {
   public static void convertInputToFahrenheit(InputStream input, PrintStream output) {
     Scanner scanner = new Scanner(input);  //declaration = assignment
     while (true) {  //while statements need boolean value to read forever, (true) always true
-      double celsius = scanner
-          .nextDouble(); //read the next double and assign to variable called celsius
-      double fahrenheit = convertC2F(celsius);
-      output.println(fahrenheit);
+      try {
+        double celsius = scanner.nextDouble(); //read the next double and assign to variable called celsius
+        double fahrenheit = convertC2F(celsius);
+        output.println(fahrenheit);
+      } catch (InputMismatchException e) {  //printf for format, first placeholder matches first thing after comma
+        System.err.printf("Unable to parse %s as double.%n", scanner.next());
+      } catch (NoSuchElementException e) {
+        break;
+      }
 
     }
   }
